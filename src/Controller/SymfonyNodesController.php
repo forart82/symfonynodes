@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\SymfonyNodes;
+use App\Entity\Texts;
 use App\Form\SymfonyNodesType;
 use App\Repository\SymfonyNodesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +32,18 @@ class SymfonyNodesController extends AbstractController
     public function new(Request $request): Response
     {
         $symfonyNode = new SymfonyNodes();
+
+        $text1=new Texts();
+        $text1->setContent("text1");
+        $symfonyNode->getTexts()->add($text1);
+
+        $text2=new Texts();
+        $text2->setContent("text2");
+        $symfonyNode->getTexts()->add($text2);
+
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);
-
+        // dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($symfonyNode);

@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SymfonyNodesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Array_;
 
 /**
  * @ORM\Entity(repositoryClass=SymfonyNodesRepository::class)
@@ -26,6 +29,17 @@ class SymfonyNodes
      * @ORM\Column(type="bigint")
      */
     private $iid;
+
+    /**
+     * @Assert\Type(type="App\Entity\Texts")
+     * @Assert\Valid
+     */
+    protected $texts;
+
+    public function __construct()
+    {
+        $this->texts= new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -55,4 +69,9 @@ class SymfonyNodes
 
         return $this;
     }
+    public function getTexts()
+    {
+        return $this->texts;
+    }
+
 }
