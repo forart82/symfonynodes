@@ -10,12 +10,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Services\UniqueId;
 
 /**
  * @Route("/symfonynodes")
  */
 class SymfonyNodesController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em=$em;
+    }
+
     /**
      * @Route("/", name="symfony_nodes_index", methods={"GET"})
      */
@@ -31,6 +40,8 @@ class SymfonyNodesController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $uniqueId=UniqueId::createId();
+
         $symfonyNode = new SymfonyNodes();
 
         $text1=new Texts();
@@ -41,13 +52,25 @@ class SymfonyNodesController extends AbstractController
         $text2->setContent("text2");
         $symfonyNode->getTexts()->add($text2);
 
+
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);
-        // dd($form);
+        dump("befor submitted");
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($symfonyNode);
-            $entityManager->flush();
+            dump("is submitted");
+            dd("hallo");
+            $text1->setUuid($uniqueId);
+            $text2->setUuid($uniqueId);
+            $text1->setContent("text1");
+            $text2->setContent("text2");
+            $symfonyNode->getTexts()->add($text1);
+            $symfonyNode->getTexts()->add($text2);
+            $symfonyNode->setSnid($uniqueId);
+
+            $this->em->persist($symfonyNode);
+
+            $this->em->flush();
+
 
             return $this->redirectToRoute('symfony_nodes_index');
         }

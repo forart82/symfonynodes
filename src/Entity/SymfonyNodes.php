@@ -21,19 +21,11 @@ class SymfonyNodes
     private $id;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string", length=255)
      */
     private $snid;
 
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $iid;
 
-    /**
-     * @Assert\Type(type="App\Entity\Texts")
-     * @Assert\Valid
-     */
     protected $texts;
 
     public function __construct()
@@ -58,20 +50,14 @@ class SymfonyNodes
         return $this;
     }
 
-    public function getIid(): ?string
-    {
-        return $this->iid;
-    }
-
-    public function setIid(string $iid): self
-    {
-        $this->iid = $iid;
-
-        return $this;
-    }
     public function getTexts()
     {
         return $this->texts;
+    }
+
+    public function addTexts(Texts $texts)
+    {
+        $this->texts->add($texts);
     }
 
 }

@@ -1,9 +1,7 @@
 {{ form_start(form) }}
-    {{ form_row(form.snid) }}
-    {{ form_row(form.iid) }}
 
-    {% for text in form.texts %}
+    {# {% for text in form.texts %}
         <li>{{ form_row(text) }}</li>
-    {% endfor %}
+    {% endfor %} #}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

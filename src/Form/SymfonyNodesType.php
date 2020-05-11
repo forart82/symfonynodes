@@ -17,15 +17,13 @@ class SymfonyNodesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $counter=5;
+        $counter = 5;
         $builder
-            ->add('snid')
-            ->add('iid')
-            ->add('texts',CollectionType::class,[
-                'entry_type'=>TextsType::class,
-                'entry_options'=>['label'=>false],
+            ->add('texts', CollectionType::class, [
+                'entry_type' => TextsType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

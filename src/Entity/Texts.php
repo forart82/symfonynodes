@@ -18,8 +18,7 @@ class Texts
     private $id;
 
     /**
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="string", length=255)
      */
     private $uuid;
 
@@ -36,6 +35,11 @@ class Texts
     public function getUuid(): ?string
     {
         return $this->uuid;
+    }
+
+    public function setUuid(string $uuid)
+    {
+        $this->uuid=$uuid;
     }
 
     public function getContent(): ?string
