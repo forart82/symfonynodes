@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymfonyNodes{% endblock %}
+
+{% block body %}
+    <h1>SymfonyNodes</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ symfony_node.id }}</td>
+            </tr>
+            <tr>
+                <th>Snid</th>
+                <td>{{ symfony_node.snid }}</td>
+            </tr>
+            <tr>
+                <th>Iid</th>
+                <td>{{ symfony_node.iid }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('symfony_nodes_index') }}">back to list</a>
+
+    <a href="{{ path('symfony_nodes_edit', {'id': symfony_node.id}) }}">edit</a>
+
+    {{ include('symfony_nodes/_delete_form.html.twig') }}
+{% endblock %}

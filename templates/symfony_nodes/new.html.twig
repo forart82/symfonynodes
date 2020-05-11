@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SymfonyNodes{% endblock %}
+
+{% block body %}
+    <h1>Create new SymfonyNodes</h1>
+
+    {{ include('symfony_nodes/_form.html.twig') }}
+
+    <a href="{{ path('symfony_nodes_index') }}">back to list</a>
+{% endblock %}
