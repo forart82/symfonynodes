@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SymfonyNodesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use PhpParser\Node\Expr\Cast\Array_;
@@ -13,6 +14,8 @@ use PhpParser\Node\Expr\Cast\Array_;
  */
 class SymfonyNodes
 {
+    private $em;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,12 +28,12 @@ class SymfonyNodes
      */
     private $snid;
 
+    protected $connections;
 
-    protected $texts;
-
-    public function __construct()
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->texts= new ArrayCollection();
+        $this->em=$em;
+        $this->connections= new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,14 +53,23 @@ class SymfonyNodes
         return $this;
     }
 
-    public function getTexts()
+    public function getConnections()
     {
-        return $this->texts;
+        return $this->connections;
     }
 
-    public function addTexts(Texts $texts)
+    public function addConnection($connection)
     {
-        $this->texts->add($texts);
+        if(!empty($connection))
+        {
+            $this->em->persist($connection);
+            $this->em->flush();
+        }
+    }
+
+    public function removeConnection($connection)
+    {
+
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\SymfonyNodes;
 use App\Entity\Texts;
+use App\Entity\Types;
 use App\Form\SymfonyNodesType;
 use App\Repository\SymfonyNodesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,29 +43,25 @@ class SymfonyNodesController extends AbstractController
     {
         $uniqueId=UniqueId::createId();
 
-        $symfonyNode = new SymfonyNodes();
-
+        $symfonyNode = new SymfonyNodes($this->em);
         $text1=new Texts();
-        $text1->setContent("text1");
-        $symfonyNode->getTexts()->add($text1);
-
         $text2=new Texts();
-        $text2->setContent("text2");
-        $symfonyNode->getTexts()->add($text2);
-
+        $type1=new Types();
+        $type2=new Types();
+        $symfonyNode->getConnections()->add($text1);
+        $symfonyNode->getConnections()->add($text2);
+        $symfonyNode->getConnections()->add($type1);
+        $symfonyNode->getConnections()->add($type2);
 
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);
-        dump("befor submitted");
         if ($form->isSubmitted() && $form->isValid()) {
-            dump("is submitted");
-            dd("hallo");
             $text1->setUuid($uniqueId);
             $text2->setUuid($uniqueId);
-            $text1->setContent("text1");
-            $text2->setContent("text2");
-            $symfonyNode->getTexts()->add($text1);
-            $symfonyNode->getTexts()->add($text2);
+            $symfonyNode->addConnection($text1);
+            $symfonyNode->addConnection($text2);
+            $symfonyNode->addConnection($type1);
+            $symfonyNode->addConnection($type2);
             $symfonyNode->setSnid($uniqueId);
 
             $this->em->persist($symfonyNode);
@@ -72,7 +69,7 @@ class SymfonyNodesController extends AbstractController
             $this->em->flush();
 
 
-            return $this->redirectToRoute('symfony_nodes_index');
+            // return $this->redirectToRoute('symfony_nodes_index');
         }
 
         return $this->render('symfony_nodes/new.html.twig', [

@@ -19,10 +19,17 @@ class SymfonyNodesType extends AbstractType
 
         $counter = 5;
         $builder
-            ->add('texts', CollectionType::class, [
+            ->add('connections', CollectionType::class, [
                 'entry_type' => TextsType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
+                'by_reference'=>false
+            ])
+            ->add('connections', CollectionType::class, [
+                'entry_type' => TypesType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference'=>false
             ]);
     }
 
