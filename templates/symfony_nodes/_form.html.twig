@@ -3,8 +3,6 @@
     {# {% for text in form.texts %}
         <li>{{ form_row(text) }}</li>
     {% endfor %} #}
-    <ul class="texts addbuttomtexts" data-prototype="{{ form_widget(form.texts.vars.prototype.content)|e('html_attr') }}">
-<li></li>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 

@@ -43,30 +43,29 @@ class SymfonyNodesController extends AbstractController
     {
         $uniqueId=UniqueId::createId();
 
+        // Creation from type with two entitys
+        // Entity 1: Text1
+        // Entity 2: Text2
         $symfonyNode = new SymfonyNodes($this->em);
         $text1=new Texts();
         $text2=new Texts();
-        $type1=new Types();
-        $type2=new Types();
+        $type=new Types();
+        $symfonyNode->getConnections()->add($type);
         $symfonyNode->getConnections()->add($text1);
         $symfonyNode->getConnections()->add($text2);
-        $symfonyNode->getConnections()->add($type1);
-        $symfonyNode->getConnections()->add($type2);
+
 
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $text1->setUuid($uniqueId);
-            $text2->setUuid($uniqueId);
-            $symfonyNode->addConnection($text1);
-            $symfonyNode->addConnection($text2);
-            $symfonyNode->addConnection($type1);
-            $symfonyNode->addConnection($type2);
-            $symfonyNode->setSnid($uniqueId);
+            // $text1->setSnid($uniqueId);
+            // $text2->setSnid($uniqueId);
+            // $type->setSnid($uniqueId);
+            // $symfonyNode->setSnid($uniqueId);
 
-            $this->em->persist($symfonyNode);
+            // $this->em->persist($symfonyNode);
 
-            $this->em->flush();
+            // $this->em->flush();
 
 
             // return $this->redirectToRoute('symfony_nodes_index');

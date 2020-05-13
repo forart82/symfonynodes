@@ -20,7 +20,7 @@ class Texts
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $uuid;
+    private $snid;
 
     /**
      * @ORM\Column(type="text")
@@ -32,14 +32,16 @@ class Texts
         return $this->id;
     }
 
-    public function getUuid(): ?string
+    public function getSnid(): ?string
     {
-        return $this->uuid;
+        return $this->snid;
     }
 
-    public function setUuid(string $uuid)
+    public function setSnid(string $snid): self
     {
-        $this->uuid=$uuid;
+        $this->snid = $snid;
+
+        return $this;
     }
 
     public function getContent(): ?string

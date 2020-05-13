@@ -60,11 +60,7 @@ class SymfonyNodes
 
     public function addConnection($connection)
     {
-        if(!empty($connection))
-        {
-            $this->em->persist($connection);
-            $this->em->flush();
-        }
+
     }
 
     public function removeConnection($connection)

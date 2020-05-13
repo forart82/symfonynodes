@@ -18,10 +18,9 @@ class Strings
     private $id;
 
     /**
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="string", length=255)
      */
-    private $uuid;
+    private $snid;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,9 +32,16 @@ class Strings
         return $this->id;
     }
 
-    public function getUuid(): ?string
+    public function getSnid(): ?string
     {
-        return $this->uuid;
+        return $this->snid;
+    }
+
+    public function setSnid(string $snid): self
+    {
+        $this->snid = $snid;
+
+        return $this;
     }
 
     public function getContent(): ?string
