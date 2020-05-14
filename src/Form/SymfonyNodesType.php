@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Motifs;
 use App\Entity\Strings;
 use App\Entity\SymfonyNodes;
 use App\Entity\Texts;
@@ -17,47 +18,47 @@ class SymfonyNodesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $values=[
+            'getTexts',
+            'getMotifs',
+            'getStrings',
+            'getTypes',
+            'getImages',
+        ];
 
-        $connections = $options['data']->getConnections();
+        foreach($values as $value)
+        {
+            $connections=$options['data']->$value();
+            foreach ($connections as $connection) {
 
-        $builder->add('text1', TextsType::class,[
-            'mapped'=>false
-        ]);
-        $builder->add('text2', TextsType::class,[
-            'mapped'=>false
-        ]);
+                $motif = substr(get_class($connection),11);
+                switch ($motif) {
+                    case 'Texts':
+                        $builder->add('texts', CollectionType::class, [
+                            'entry_type' => TextsType::class,
+                            'entry_options' => ['label' => false],
+                            'allow_add' => true,
+                            'by_reference'=>false
+                        ]);
+
+                        break;
+                    case 'Types':
+                        $builder->add('types', CollectionType::class, [
+                            'entry_type' => TypesType::class,
+                            'entry_options' => ['label' => false],
+                            'allow_add' => true,
+                            'by_reference'=>false
+                        ]);
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
 
 
-        // foreach ($connections as $connection) {
-
-        //     $motif = substr(get_class($connection), 11);
-
-        //     switch ($motif) {
-        //         case 'Texts':
-        //             $builder->add('connections', CollectionType::class, [
-        //                 'entry_type' => TextsType::class,
-        //                 'entry_options' => ['label' => false],
-        //                 'allow_add' => true,
-        //                 'by_reference'=>false
-        //             ]);
-        //     dump($connections,$motif);
-
-        //             break;
-        //         case 'Types':
-        //             $builder->add('connections', CollectionType::class, [
-        //                 'entry_type' => TypesType::class,
-        //                 'entry_options' => ['label' => false],
-        //                 'allow_add' => true,
-        //                 'by_reference'=>false
-        //             ]);
-        //     dump($connection,$motif);
-
-        //             break;
-
-        //         default:
-        //             break;
-        //     }
-        // }
 
         // $builder->add('connections', CollectionType::class, [
         //         'entry_type' => TypesType::class,

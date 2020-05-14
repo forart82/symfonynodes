@@ -47,13 +47,28 @@ class SymfonyNodesController extends AbstractController
         // Entity 1: Text1
         // Entity 2: Text2
         $symfonyNode = new SymfonyNodes($this->em);
-        $text1=new Texts();
-        $text2=new Texts();
-        $type=new Types();
-        $symfonyNode->getConnections()->add($type);
-        $symfonyNode->getConnections()->add($text1);
-        $symfonyNode->getConnections()->add($text2);
+        $connections=[];
 
+        if(100==$request->get('hiddeninput'))
+        {
+            $values=[
+                'texts',
+                'motifs',
+                'strings',
+                'types',
+                'images',
+            ];
+
+            foreach($values as $value)
+            {
+                $connections[$value]=$request->get($value);
+            }
+
+        }
+
+        $test="Types";
+        $testobj= new $test();
+        dd($testobj);
 
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);

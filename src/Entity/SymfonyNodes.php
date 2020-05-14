@@ -28,12 +28,20 @@ class SymfonyNodes
      */
     private $snid;
 
-    protected $connections;
+    protected $texts;
+    protected $motifs;
+    protected $strings;
+    protected $types;
+    protected $images;
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em=$em;
-        $this->connections= new ArrayCollection();
+        $this->texts= new ArrayCollection();
+        $this->motifs= new ArrayCollection();
+        $this->strings= new ArrayCollection();
+        $this->types= new ArrayCollection();
+        $this->images= new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,19 +61,81 @@ class SymfonyNodes
         return $this;
     }
 
-    public function getConnections()
+    // TODO set getter and setter values
+
+    public function getTexts()
     {
-        return $this->connections;
+        return $this->texts;
     }
 
-    public function addConnection($connection)
-    {
-
-    }
-
-    public function removeConnection($connection)
+    public function addText($text)
     {
 
     }
 
+    public function removeText($text)
+    {
+
+    }
+
+    public function getMotifs()
+    {
+        return $this->motifs;
+    }
+
+    public function addMotif($motif)
+    {
+
+    }
+
+    public function removeMotif($motif)
+    {
+
+    }
+
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    public function addType($type)
+    {
+        $this->em->persist($type);
+        $this->em->flush();
+    }
+
+    public function removeType($type)
+    {
+
+    }
+
+    public function getStrings()
+    {
+        return $this->strings;
+    }
+
+    public function addString($string)
+    {
+
+    }
+
+    public function removeString($string)
+    {
+
+    }
+
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    public function addImage($image)
+    {
+
+    }
+
+    public function removeImage($image)
+    {
+
+    }
 }
