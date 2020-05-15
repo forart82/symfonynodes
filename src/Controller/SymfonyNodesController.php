@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Types;
 use App\Entity\Motifs;
 use App\Entity\SymfonyNodes;
 use App\Form\SymfonyNodesType;
-use App\Repository\SymfonyNodesRepository;
 use App\Services\Statics\SnValues;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Services\Statics\UniqueId;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\SymfonyNodesRepository;
+use App\Repository\TypesRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Services\Statics\UniqueId;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/symfonynodes")
@@ -27,28 +29,28 @@ class SymfonyNodesController extends AbstractController
     }
 
     /**
-     * @Route("/", name="symfony_nodes_index", methods={"GET"})
+     * @Route("/", name="symfonynodes_index", methods={"GET"})
      */
-    public function index(SymfonyNodesRepository $symfonyNodesRepository): Response
+    public function index(TypesRepository $typesRepository): Response
     {
-        return $this->render('symfony_nodes/index.html.twig', [
-            'symfony_nodes' => $symfonyNodesRepository->findAll(),
+        return $this->render('MAIN/INDEX.html.twig', [
+            'elements' => $typesRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/type", name="symfony_nodes_type", methods={"GET","POST"})
+     * @Route("/type", name="symfonynodes_type", methods={"GET","POST"})
      */
     public function type(Request $request): Response
     {
         $values=SnValues::SNVALUES;
         $uniqueId = UniqueId::createId();
-        $symfonyNode = new SymfonyNodes($this->em);
+        $symfonyNode = new SymfonyNodes();
         $symfonyNode->setSnid($uniqueId);
         $motif=new Motifs();
         $motifs=[];
+        $type=new Types();
         $connections = [];
-
 
         if (100 == $request->get('hiddeninput')) {
             foreach ($values as $key => $value) {
@@ -61,22 +63,31 @@ class SymfonyNodesController extends AbstractController
                     $this->em->persist($entity);
                 }
             }
-            $motif->setContent($motifs);
-            $motif->setSnid($uniqueId);
-            $this->em->persist($motif);
-            $this->em->persist($symfonyNode);
-            $this->em->flush();
+            if(strlen($request->get('getTypes'))>0)
+            {
+                $motif->setContent($motifs);
+                $motif->setSnid($uniqueId);
+                $this->em->persist($motif);
+
+                $type->setContent($request->get('getTypes'));
+                $type->setSnid($uniqueId);
+                $this->em->persist($type);
+
+                $this->em->persist($symfonyNode);
+                $this->em->flush();
+            }
+
 
         }
 
-        return $this->render('symfony_nodes/type.html.twig', [
+        return $this->render('symfonynodes/type.html.twig', [
             'symfony_node' => $symfonyNode,
             'values'=>$values,
         ]);
     }
 
     /**
-     * @Route("/new", name="symfony_nodes_new", methods={"GET","POST"})
+     * @Route("/new", name="symfonynodes_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -113,7 +124,7 @@ class SymfonyNodesController extends AbstractController
             $this->em->persist($symfonyNode);
             $this->em->flush();
         }
-        return $this->render('symfony_nodes/new.html.twig', [
+        return $this->render('symfonynodes/new.html.twig', [
             'symfony_node' => $symfonyNode,
             'form' => $form->createView(),
             'values'=>$values,
@@ -121,17 +132,17 @@ class SymfonyNodesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="symfony_nodes_show", methods={"GET"})
+     * @Route("/{id}", name="symfonynodes_show", methods={"GET"})
      */
     public function show(SymfonyNodes $symfonyNode): Response
     {
-        return $this->render('symfony_nodes/show.html.twig', [
+        return $this->render('symfonynodes/show.html.twig', [
             'symfony_node' => $symfonyNode,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="symfony_nodes_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="symfonynodes_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, SymfonyNodes $symfonyNode): Response
     {
@@ -141,17 +152,17 @@ class SymfonyNodesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('symfony_nodes_index');
+            return $this->redirectToRoute('symfonynodes_index');
         }
 
-        return $this->render('symfony_nodes/edit.html.twig', [
+        return $this->render('symfonynodes/edit.html.twig', [
             'symfony_node' => $symfonyNode,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="symfony_nodes_delete", methods={"DELETE"})
+     * @Route("/{id}", name="symfonynodes_delete", methods={"DELETE"})
      */
     public function delete(Request $request, SymfonyNodes $symfonyNode): Response
     {
@@ -161,6 +172,6 @@ class SymfonyNodesController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('symfony_nodes_index');
+        return $this->redirectToRoute('symfonynodes_index');
     }
 }

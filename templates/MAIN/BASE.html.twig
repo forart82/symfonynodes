@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Tealfinder
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<div id="MAIN">
+			<div id="MAINLEFT"></div>
+			<div id="MAINRIGHT"></div>
+			<div id="MAINHEADER">
+			</div>
+			{# {% include "MAIN/navigation.html.twig" %} #}
+			{# TODO Find a place for information messages #}
+			<div id="CONTAINER">
+				<div id="MASSAGES">
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success">
+							{{ message }}
+						</div>
+					{% endfor %}
+					{% for message in app.flashes('danger') %}
+						<div class="alert alert-danger">
+							{{ message }}
+						</div>
+					{% endfor %}
+					{% for message in app.flashes('error') %}
+						<div class="alert alert-danger">
+							{{ message }}
+						</div>
+					{% endfor %}
+				</div>
+				{% block body %}{% endblock %}
+			</div>
+		</div>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</body>
+</html>

@@ -1,0 +1,89 @@
+<div class="list-teal">
+	<h1 class="h1 list-teal-title">{{className(elements)}}
+		index</h1>
+	<div class="list-teal-table">
+		<table class="table">
+			<thead>
+				<tr>
+					{% for property in cast_to_array(elements) %}
+						{% if property|lower not in restrictetList  %}
+							<th>{{('t'~property|capitalize)|trans}}</th>
+						{% endif %}
+					{% endfor %}
+					{% if className(elements)|lower == "user" %}
+						<th>{{ 'tUserAdmin'|trans }}</th>
+						<th>{{'tInvitation'|trans}}</th>
+					{% endif %}
+					<th>{{'tActions'|trans}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if elements is iterable %}
+					{% for element in elements %}
+						<tr>
+							{% for property in cast_to_array(elements) %}
+								{% if property == "logo" %}
+									<td>
+										<img class="list-teal-company-logo-table" alt="Company Logo" src="data:image/png;base64,{{ get_string(element,property) }}"/>
+									</td>
+								{% else %}
+									{% if property|lower not in restrictetList  %}
+										<td>{{ get_string(element,property,0)|raw }}</td>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+							{% if className(elements)|lower == "user" %}
+								<td>{{change_svg_color(images.site.admin.svg,element,'admin')|raw}}</td>
+								<td>
+									{% set timeDifference = date().format('U') - element.isNew %}
+									{% if timeDifference < 86400 %}
+										<a href="{{path('user_reinvite',{'id':element.id})}}">{{change_svg_color(images.site.email_send.svg,element,'email')|raw}}</a>
+									{% else %}
+										<a href="{{path('user_reinvite',{'id':element.id})}}">{{change_svg_color(images.site.email.svg,element,'email')|raw}}</a>
+									{% endif %}
+
+								</td>
+							{% endif %}
+							<td>
+								<a class="btnGlobalSmall" href="{{ path(className(elements.0)|lower~'_show', {'id': element.id}) }}">{{'tShow'|trans}}</a>
+								{% if className(elements)|lower == 'types' %}
+									<a class="btnGlobalSmall" href="{{ path(className(elements.0)|lower~'_create', {'id': element.id}) }}">{{'tCreate'|trans}}</a>
+								{% endif %}
+								<a class="btnGlobalSmall" href="{{ path(className(elements.0)|lower~'_edit', {'id': element.id}) }}">{{'tEdit'|trans}}</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">{{ 'tNoRecordsFound'|trans }}</td>
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						{% for property in cast_to_array(elements) %}
+							{% if property == "logo" %}
+								<td>
+									<img class="list-teal-company-logo-table" alt="Company Logo" src="data:image/png;base64,{{ get_string(elements,property) }}"/>
+								</td>
+							{% else %}
+								{% if property|lower not in restrictetList  %}
+									<td>{{ get_string(elements,property,0)|raw }}</td>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+						{% if className(elements)|lower == "user" %}
+							<td>{{change_svg_color(images.site.admin.svg,elements,'admin')|raw}}</td>
+							<td>{{change_svg_color(images.site.email.svg,elements,'email')|raw}}</td>
+						{% endif %}
+						<td>
+							<a class="btnGlobalSmall" href="{{ path(className(elements)|lower~'_show', {'id': elements.id}) }}">{{'tShow'|trans}}</a>
+							<a class="btnGlobalSmall" href="{{ path(className(elements)|lower~'_edit', {'id': elements.id}) }}">{{'tEdit'|trans}}</a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6">{{ 'tNoRecordsFound'|trans }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div>

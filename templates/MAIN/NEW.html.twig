@@ -1,0 +1,17 @@
+{% extends 'MAIN/BASE.html.twig' %}
+{% block body %}
+	<div class="list-teal">
+		{% if element_teal is defined %}
+			<div class="list-teal-title-block">
+				<h1 class="h1 list-teal-title">
+					{{attribute(element_teal, "name") is defined ? element_teal.name : attribute(element_teal, "title") is defined ? element_teal.title : ""}}
+				</h1>
+				{% if companyImage is defined %}
+					<img calss="list-teal-company-logo" alt="Company Logo" src="data:image/png;base64,{{ companyImage }}"/>
+				{% endif %}
+			</div>
+		{% endif %}
+		{{ include('MAIN/_form.html.twig', {'button_label': 'Update'}) }}
+		{% include "MAIN/_button_line.html.twig" %}
+	</div>
+{% endblock %}

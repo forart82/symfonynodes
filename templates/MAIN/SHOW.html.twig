@@ -1,0 +1,26 @@
+{% extends "MAIN/BASE.html.twig" %}
+{% block body %}
+	<div class="list-teal">
+		<h1 class="h1 list-teal-title">
+			{{attribute(elements, "name") is defined ? elements.name : attribute(elements, "title") is defined ? elements.title : ""}}
+		</h1>
+		<table class="table">
+			<tbody>
+				{% for property in cast_to_array(elements) %}
+					<tr>
+						<th>{{('t'~property|capitalize)|trans}}</th>
+						{% if property == "logo" %}
+							<td>
+								<img class="list-teal-company-logo-table" alt="Company Logo" src="data:image/png;base64,{{ get_string(elements,property) }}"/>
+							</td>
+						{% else %}
+							<td>{{ get_string(elements,property,20,', ')|raw }}</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		{% include "MAIN/_button_line.html.twig" %}
+	</div>
+{% endblock %}

@@ -14,8 +14,6 @@ use PhpParser\Node\Expr\Cast\Array_;
  */
 class SymfonyNodes
 {
-    private $em;
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -34,9 +32,8 @@ class SymfonyNodes
     protected $types;
     protected $images;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct()
     {
-        $this->em=$em;
         $this->texts= new ArrayCollection();
         $this->motifs= new ArrayCollection();
         $this->strings= new ArrayCollection();
@@ -98,8 +95,6 @@ class SymfonyNodes
 
     public function addType($type)
     {
-        $this->em->persist($type);
-        $this->em->flush();
     }
 
     public function removeType($type)
