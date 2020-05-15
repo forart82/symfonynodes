@@ -70,12 +70,10 @@ class SymfonyNodes
 
     public function addText($text)
     {
-
     }
 
     public function removeText($text)
     {
-
     }
 
     public function getMotifs()

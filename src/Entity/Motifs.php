@@ -20,7 +20,7 @@ class Motifs
     /**
      * @ORM\Column(type="json")
      */
-    private $entitys = [];
+    private $content = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,14 +32,14 @@ class Motifs
         return $this->id;
     }
 
-    public function getEntitys(): ?array
+    public function getContent(): ?array
     {
-        return $this->entitys;
+        return $this->content;
     }
 
-    public function setEntitys(array $entitys): self
+    public function setContent(array $content): self
     {
-        $this->entitys = $entitys;
+        $this->content = $content;
 
         return $this;
     }

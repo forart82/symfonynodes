@@ -18,7 +18,7 @@ class SymfonyNodesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $values=[
+        $values = [
             'getTexts',
             'getMotifs',
             'getStrings',
@@ -26,35 +26,17 @@ class SymfonyNodesType extends AbstractType
             'getImages',
         ];
 
-        foreach($values as $value)
-        {
-            $connections=$options['data']->$value();
+        foreach ($values as $value) {
+            $connections = $options['data']->$value();
             foreach ($connections as $connection) {
-
-                $motif = substr(get_class($connection),11);
-                switch ($motif) {
-                    case 'Texts':
-                        $builder->add('texts', CollectionType::class, [
-                            'entry_type' => TextsType::class,
-                            'entry_options' => ['label' => false],
-                            'allow_add' => true,
-                            'by_reference'=>false
-                        ]);
-
-                        break;
-                    case 'Types':
-                        $builder->add('types', CollectionType::class, [
-                            'entry_type' => TypesType::class,
-                            'entry_options' => ['label' => false],
-                            'allow_add' => true,
-                            'by_reference'=>false
-                        ]);
-
-                        break;
-
-                    default:
-                        break;
-                }
+                $class = substr(get_class($connection), 11);
+                $type = 'App\\Form\\' . $class . 'Type';
+                $builder->add(strtolower($class), CollectionType::class, [
+                    'entry_type' => $type,
+                    'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'by_reference' => false,
+                ]);
             }
         }
 
@@ -72,6 +54,7 @@ class SymfonyNodesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SymfonyNodes::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

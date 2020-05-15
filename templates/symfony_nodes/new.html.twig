@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New SymfonyNodes{% endblock %}
+{% block title %}New SymfonyNodes
+{% endblock %}
 
 {% block body %}
-    <h1>Create new SymfonyNodes</h1>
+	<h1>Create new SymfonyNodes</h1>
 
-    {{ include('symfony_nodes/_form.html.twig') }}
+	{{ include('symfony_nodes/_form.html.twig') }}
 
-    <a href="{{ path('symfony_nodes_index') }}">back to list</a>
+	<a href="{{ path('symfony_nodes_index') }}">back to list</a>
 
 
-<form id="option" action="#" method="POST">
-    <label for="types">Types?</label>
-    <input type="number" name="types">
-
-    <label for="texts">Texts?</label>
-    <input type="number" name="texts">
-
-    <input type="hidden" name="hiddeninput" value="100">
-    <input type="submit" form="option" value="send">
-</form>
+	<form id="option" action="#" method="POST">
+		{% if values is defined %}
+			{% for value in values %}
+				<label for="{{value.0}}">{{value.2}}</label>
+				<input type="number" name="{{value.0}}">
+			{% endfor %}
+		{% endif %}
+        <input type="hidden" name="hiddeninput" value="100">
+		<input type="submit" form="option" name="submit" value="submit">
+	</form>
 
 {% endblock %}

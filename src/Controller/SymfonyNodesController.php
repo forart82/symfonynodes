@@ -23,7 +23,7 @@ class SymfonyNodesController extends AbstractController
 
     public function __construct(EntityManagerInterface $em)
     {
-        $this->em=$em;
+        $this->em = $em;
     }
 
     /**
@@ -41,46 +41,76 @@ class SymfonyNodesController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $uniqueId=UniqueId::createId();
+        $uniqueId = UniqueId::createId();
 
         // Creation from type with two entitys
         // Entity 1: Text1
         // Entity 2: Text2
         $symfonyNode = new SymfonyNodes($this->em);
-        $connections=[];
-
-        if(100==$request->get('hiddeninput'))
-        {
-            $values=[
-                'texts',
-                'motifs',
-                'strings',
-                'types',
-                'images',
-            ];
-
-            foreach($values as $value)
-            {
-                $connections[$value]=$request->get($value);
+        $connections = [];
+        $objects = [];
+        $values = [
+            'Texts' => [
+                'getTexts',
+                'App\\Entity\\Texts',
+                'Texts',
+            ],
+            'Motifs' => [
+                'getMotifs',
+                'App\\Entity\\Motifs',
+                'Motifs',
+            ],
+            'Strings' => [
+                'getStrings',
+                'App\\Entity\\Strings',
+                'Strings',
+            ],
+            'Types' => [
+                'getTypes',
+                'App\\Entity\\Types',
+                'Types',
+            ],
+            'Images' => [
+                'getImages',
+                'App\\Entity\\Images',
+                'Images',
+            ],
+        ];
+        if (100 == $request->get('hiddeninput')) {
+            foreach ($values as $key => $value) {
+                $connections[$key] = $request->get($value[0]);
+                for ($i = 0; $i < (int)$connections[$key]; $i++) {
+                    $get=$value[0];
+                    $add=$value[1];
+                    $symfonyNode->$get()->add(new $add());
+                }
             }
-
         }
 
-        $test="Types";
-        $testobj= new $test();
-        dd($testobj);
-
+        // dump($symfonyNode);
         $form = $this->createForm(SymfonyNodesType::class, $symfonyNode);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getExtraData()['texts'][0]);
+            foreach ($values as $key => $value) {
+                $elementsToSet=$form->getExtraData(strtolower($value[2]));
+                foreach ($elementsToSet as $key => $content) {
+                    $obj=$value[1];
+                    $object=new $obj();
+                    $object->setSnid($uniqueId);
+                    $object->setContent($content[0]['content']);
+                    $this->em->persist($object);
+                    $this->em->flush();
+                }
+            }
             // $text1->setSnid($uniqueId);
             // $text2->setSnid($uniqueId);
             // $type->setSnid($uniqueId);
-            // $symfonyNode->setSnid($uniqueId);
+            $symfonyNode->setSnid($uniqueId);
 
-            // $this->em->persist($symfonyNode);
+            $this->em->persist($symfonyNode);
 
-            // $this->em->flush();
+            $this->em->flush();
 
 
             // return $this->redirectToRoute('symfony_nodes_index');
@@ -89,6 +119,7 @@ class SymfonyNodesController extends AbstractController
         return $this->render('symfony_nodes/new.html.twig', [
             'symfony_node' => $symfonyNode,
             'form' => $form->createView(),
+            'values'=>$values,
         ]);
     }
 
@@ -127,7 +158,7 @@ class SymfonyNodesController extends AbstractController
      */
     public function delete(Request $request, SymfonyNodes $symfonyNode): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$symfonyNode->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $symfonyNode->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($symfonyNode);
             $entityManager->flush();

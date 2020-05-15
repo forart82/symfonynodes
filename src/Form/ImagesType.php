@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Texts;
+use App\Entity\Images;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TextsType extends AbstractType
+class ImagesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,7 +18,7 @@ class TextsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Texts::class,
+            'data_class' => Images::class,
         ]);
     }
 
