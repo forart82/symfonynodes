@@ -5,7 +5,7 @@
  * Contains a class to create a unique string base sur une timestamp
  */
 
-namespace App\Services;
+namespace App\Services\Statics;
 
 class UniqueId
 {

@@ -10,7 +10,6 @@
             <tr>
                 <th>Id</th>
                 <th>Snid</th>
-                <th>Iid</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,7 +18,6 @@
             <tr>
                 <td>{{ symfony_node.id }}</td>
                 <td>{{ symfony_node.snid }}</td>
-                <td>{{ symfony_node.iid }}</td>
                 <td>
                     <a href="{{ path('symfony_nodes_show', {'id': symfony_node.id}) }}">show</a>
                     <a href="{{ path('symfony_nodes_edit', {'id': symfony_node.id}) }}">edit</a>

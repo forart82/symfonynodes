@@ -22,7 +22,7 @@ class Images
      */
     private $snid;
     /**
-     * @ORM\Column(type="blob")
+     * @ORM\Column(type="blob", nullable=true)
      */
     private $content;
 

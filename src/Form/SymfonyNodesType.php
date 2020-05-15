@@ -7,6 +7,7 @@ use App\Entity\Strings;
 use App\Entity\SymfonyNodes;
 use App\Entity\Texts;
 use App\Entity\Types;
+use App\Services\Statics\SnValues;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -18,16 +19,11 @@ class SymfonyNodesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $values = [
-            'getTexts',
-            'getMotifs',
-            'getStrings',
-            'getTypes',
-            'getImages',
-        ];
+        $values = SnValues::SNVALUES;
 
         foreach ($values as $value) {
-            $connections = $options['data']->$value();
+            $get=$value['method'];
+            $connections = $options['data']->$get();
             foreach ($connections as $connection) {
                 $class = substr(get_class($connection), 11);
                 $type = 'App\\Form\\' . $class . 'Type';
@@ -39,15 +35,6 @@ class SymfonyNodesType extends AbstractType
                 ]);
             }
         }
-
-
-
-        // $builder->add('connections', CollectionType::class, [
-        //         'entry_type' => TypesType::class,
-        //         'entry_options' => ['label' => false],
-        //         'allow_add' => true,
-        //         'by_reference'=>false
-        //     ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

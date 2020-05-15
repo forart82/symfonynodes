@@ -23,7 +23,7 @@ class Texts
     private $snid;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
