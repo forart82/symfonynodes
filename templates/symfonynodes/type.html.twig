@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SymfonyNodes
+{% endblock %}
+
+{% block body %}
+	<h1>{{'tCreateNewContentType'|trans}}</h1>
+
+	{% if created is defined %}
+		<h2>{{type.content}}</h2>
+		{% set entityIds = [] %}
+
+		{% if entitys is defined %}
+			{% for key,entity in entitys %}
+				{% if entity.id in entityIds %}
+					{% else %}
+					{{className(entity)}}
+					{{dump(entityIds)}}
+				{% endif %}
+				{% for subEntity in entitys %}
+					{% if subEntity.relation == entity.id %}
+						{{className(entity)}}
+						{% set entityIds = entityIds|merge(({key:subEntity.id})) %}
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		{% endif %}
+
+
+		{% if entity is defined %}
+
+
+			<form id="option" action="{{path('types_add_entity',{'snid':type.snid,'eid':entity.id })}}" method="POST">
+
+				{% for motif in motifs.content %}
+					<h3>-{{motif}}
+						add :
+						{% if values is defined %}
+							{% for value in values %}
+								{% if value.type == 'content' %}
+									<label for="{{value.method}}">{{'t'~value.name|trans}}</label>
+									<input type="submit" form="option" name="{{value.method}}" value="{{'t'~value.name|trans}}">
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					</h3>
+				{% endfor %}
+				<input type="hidden" name="hiddeninput" value="100">
+			</form>
+		{% endif %}
+
+
+		<form id="option" action="{{path('types_add_content')}}" method="POST">
+			{% if values is defined %}
+				{% for value in values %}
+					{% if value.type == 'content' %}
+						<label for="{{value.method}}">{{'t'~value.name|trans}}</label>
+						<input type="submit" form="option" name="{{value.method}}" value="{{'t'~value.name|trans}}">
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			<input type="hidden" name="hiddeninput" value="100">
+			<br>
+			<input type="submit" form="option" name="submit" value="{{'tFinish'|trans}}">
+		</form>
+		<a href="{{ path('symfonynodes_index') }}">back to list</a>
+
+
+	{% else %}
+		<form id="option" action="#" method="POST">
+			<label for="{{values.Types.method}}">{{'tEnterTypeName'|trans}}</label>
+			<input type="text" name="{{values.Types.method}}">
+			{% if values is defined %}
+				{% for value in values %}
+					{% if value.type == 'content' %}
+						<label for="{{value.method}}">{{'t'~value.name|trans}}</label>
+						<input type="submit" form="option" name="{{value.method}}" value="{{'t'~value.name|trans}}">
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			<input type="hidden" name="hiddeninput" value="100">
+			<br>
+			<input type="submit" form="option" name="submit" value="{{'tFinish'|trans}}">
+		</form>
+		<a href="{{ path('symfonynodes_index') }}">back to list</a>
+	{% endif %}
+{% endblock %}

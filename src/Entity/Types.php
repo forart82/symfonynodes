@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TypesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Services\Statics as SS;
 
 /**
  * @ORM\Entity(repositoryClass=TypesRepository::class)
@@ -11,9 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Types
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var string
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="App\Services\ORM\IdGenerator")
      */
     private $id;
 
@@ -27,7 +31,8 @@ class Types
      */
     private $content;
 
-    public function getId(): ?int
+
+    public function getId(): ?string
     {
         return $this->id;
     }

@@ -2,12 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\SymfonyNodesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use PhpParser\Node\Expr\Cast\Array_;
 
 /**
  * @ORM\Entity(repositoryClass=SymfonyNodesRepository::class)
@@ -15,9 +11,12 @@ use PhpParser\Node\Expr\Cast\Array_;
 class SymfonyNodes
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var string
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="App\Services\ORM\IdGenerator")
      */
     private $id;
 
@@ -41,7 +40,7 @@ class SymfonyNodes
         $this->images= new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

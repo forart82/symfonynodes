@@ -7,11 +7,13 @@
 
 namespace App\Services\Statics;
 
+
+
 class UniqueId
 {
   public static function createId()
   {
-    $uniqueId=microtime(true).uniqid();
-    return $uniqueId;
+    $uniqueId=microtime(true).'O' . uniqid(). uniqid();
+    return str_replace('.','',$uniqueId);
   }
 }

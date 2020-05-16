@@ -11,9 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Motifs
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var string
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="App\Services\ORM\IdGenerator")
      */
     private $id;
 
@@ -27,7 +30,7 @@ class Motifs
      */
     private $snid;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
